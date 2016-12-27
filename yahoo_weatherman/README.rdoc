@@ -1,0 +1,72 @@
+= Yahoo Weatherman
+
+A simple wrapper for the Yahoo! Weather API.
+ 
+It supports internationalization via YAML files. Just checkout the i18n directory to figure out how to
+add support for your language. 
+
+== Instalation
+
+  gem install yahoo_weatherman
+
+== Example
+
+Weatherman is very easy to use. Just search for a city woeid in the [Yahoo! Weather homepage](http://weather.yahoo.com/search) and have fun!
+
+  client = Weatherman::Client.new
+  response = client.lookup_by_woeid 455821
+
+  response.location['city'] # => "Belo Horizonte"
+  response.location['country'] # => "Brazil"
+  response.condition['date'] # => #<Date: -1/2,0,2299161>
+
+Here is an example of changing the localization of the output to Brazilian Portugeuese by setting :lang to 'pt-br':
+
+  ptbr_client = Weatherman::Client.new(:lang 'pt-br')
+  response = ptbr_client.lookup_by_woeid 455821
+
+  response.condition['text'] # => "Parcialmente Nublado"
+  response.condition['country'] # => "Brasil"
+
+If you don't know your WOEID, you can leverage Yahoo's [GeoPlanet](http://developer.yahoo.com/geo/geoplanet) API. You can search by postal code, city/state, landmark, or any other combination allowed by their service.  Such as:
+
+    client = Weatherman::Client.new
+
+    client.lookup_by_location('66061').condition['temp']
+    client.lookup_by_location('olathe, ks').condition['temp']
+    client.lookup_by_location('north pole').condition['temp']
+    client.lookup_by_location('sydney opera house').condition['temp']
+
+Weatherman outputs the temperature as Celsius by default. To change this to Fahrenheit:
+
+    client = Weatherman::Client.new(unit: 'f')
+
+== Thanks
+
+To all the {nice folks}[http://github.com/dlt/yahoo_weatherman/graphs/contributors] who have contributed to this gem. :-)
+
+= License
+
+(The MIT License)
+ 
+Copyright (c) 2010-2013 Dalto Curvelano Junior
+ 
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+ 
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+ 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  
